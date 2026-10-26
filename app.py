@@ -6,6 +6,26 @@ from datetime import date
 
 load_dotenv()
 
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("Private AI Chatbot")
+
+    access_code = st.text_input(
+        "Enter access code",
+        type="password"
+    )
+
+    if st.button("Access Chatbot"):
+        if access_code == os.getenv("ACCESS_CODE"):
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Incorrect access code. Please try again.")
+
+    st.stop()
+
 api_key = os.getenv("OPENAI_API_KEY")
 
 if not api_key:
